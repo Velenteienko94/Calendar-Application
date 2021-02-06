@@ -1,9 +1,8 @@
-.centerPosition {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+body {
+  font-size: 62.5%;
 }
 
-.Blue-Color {
-  color: blue;
+.table-cell {
+  padding: 1rem;
+  border: 0.1rem solid black;
 }
