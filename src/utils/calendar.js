@@ -19,25 +19,12 @@ export const timeSlots = [
   "18:00",
 ];
 
-//rewright with map
 const calendar = weekDays.map(() => {
   const day = timeSlots.map(() => {
-    const cell = createElement("td", { className: "table-cell", cell });
+    const cell = createElement("td", { className: "table-cell" });
     return cell;
   });
   return day;
 });
-// console.log(day);
-// for (const day of weekDays) {
-//   const dayOfWeek = [];
-//   for (const time of timeSlots) {
-//     const cell = createElement("td", { className: "table-cell" });
-//     dayOfWeek.push({
-//       meeting: [],
-//       cell,
-//     });
-//   }
-//   calendar.push(dayOfWeek);
-// }
 
 export default calendar;
