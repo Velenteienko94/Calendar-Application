@@ -1,8 +1,7 @@
 body {
   font-size: 62.5%;
-}
-
-.table-cell {
-  padding: 1rem;
-  border: 0.1rem solid black;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
 }

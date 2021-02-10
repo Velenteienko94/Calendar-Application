@@ -1,0 +1,33 @@
+#custom-participants-select {
+  position: relative;
+  margin-left: auto;
+  #custom-arrow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    background: rgba(128, 128, 128, 0.287);
+    height: 95%;
+    width: 3rem;
+    border: solid black 2px;
+    border-bottom: hidden;
+    border-radius: 5%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  #custom-arrow::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  #custom-arrow::after {
+    border-left: 0.5rem solid transparent;
+    border-right: 0.5rem solid transparent;
+    border-top: 0.5rem solid gray;
+    top: 55%;
+  }
+}
