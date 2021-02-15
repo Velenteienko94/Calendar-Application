@@ -6,10 +6,12 @@ import { createTableCell } from "./components/table-cell";
 import { createTableHeader } from "./components/table-header";
 import { createToolbar } from "./components/toolbar";
 import { createElement } from "./utils/createElement";
+// import { cerateForm } from "./components/form";
+// import { createEvent } from "./utils/createEvent";
+import calendar from "./utils/calendar";
 
 const calendarContainer = document.getElementById("calendarContainer");
 const calendarTable = createElement("table", { id: "calendar" });
-console.log(createToolbar());
 calendarContainer.appendChild(createToolbar());
 calendarContainer.appendChild(calendarTable);
 
@@ -26,14 +28,16 @@ const headers = [
 
 const headersRow = createTableRow(headers);
 calendarTable.appendChild(headersRow);
-timeSlots.forEach((value) => {
+timeSlots.forEach((value, timeIndex) => {
   const timeSlot = createTableCell({
     innerText: value,
     className: "timeSlot-cell",
   });
   const cells = [timeSlot];
-  weekDays.forEach(() => {
-    cells.push(createTableCell({ className: "table-cell" }));
+  weekDays.forEach((el, dayIndex) => {
+    cells.push(calendar[dayIndex][timeIndex].cell);
   });
   calendarTable.appendChild(createTableRow(cells));
 });
+
+// const createEventBtn = document.getElementById("createEventBtn");

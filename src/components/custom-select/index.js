@@ -2,7 +2,7 @@ import "./style.scss";
 import { createElement } from "../../utils/createElement";
 import { createDropdown } from "../dropdown/index";
 import { createOptions } from "../options/index";
-import participants from "../../constants/index";
+import { participants } from "../../constants/index";
 /**
  *
  */
@@ -14,5 +14,6 @@ export function createCustomSelect() {
   const customArrow = createElement("span", { id: "custom-arrow" });
   customParticipantsSelect.appendChild(participantSelect);
   customParticipantsSelect.appendChild(customArrow);
+
   return customParticipantsSelect;
 }

@@ -33,8 +33,8 @@ module.exports = {
       },
     ],
   },
-  entry: ["./src/index.js"],
-  output: {
-    filename: "bundle.js",
+  entry: {
+    main: "./src/index.js",
+    form: "./src/components/form/index.js",
   },
 };

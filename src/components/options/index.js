@@ -9,5 +9,12 @@ export function createOptions(participanNames = []) {
     const option = createElement("option", { innerText: name });
     return option;
   });
+
+  const defaultOption = createElement("option", {
+    selected: "selected",
+    innerText: "All members",
+  });
+  options.push(defaultOption);
+
   return options;
 }

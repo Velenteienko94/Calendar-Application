@@ -21,10 +21,14 @@ export const timeSlots = [
 
 const calendar = weekDays.map(() => {
   const day = timeSlots.map(() => {
-    const cell = createElement("td", { className: "table-cell" });
-    return cell;
+    const cell = createElement("td", {
+      className: "table-cell",
+    });
+    return {
+      cell,
+      meeting: null,
+    };
   });
   return day;
 });
-
 export default calendar;
