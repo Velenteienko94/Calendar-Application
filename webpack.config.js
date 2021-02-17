@@ -35,6 +35,6 @@ module.exports = {
   },
   entry: {
     main: "./src/index.js",
-    form: "./src/components/form/index.js",
+    form: "./src/form.js",
   },
 };

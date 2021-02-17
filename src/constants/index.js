@@ -19,3 +19,5 @@ export const daysOfWeek = [
   "Thursday",
   "Friday",
 ];
+
+export const meetings = [];

@@ -1,22 +1,29 @@
 import "./style.scss";
 import { createElement } from "../../utils/createElement";
-import { createDropdown } from "../dropdown/index";
+import { createDefaultDropdown } from "../default-dropdown/index";
 import { createDefaultOptions } from "../default-options/index";
+import { createLable } from "../create-lable";
 /**
  *
  */
-export function createCustomFormSelect(options = []) {
+export function createCustomFormSelect(
+  options = [],
+  atributes = {},
+  lableAtributes = []
+) {
   const customFormSelect = createElement("div", {
-    calssName: "custom-form-select",
+    className: "form-select",
   });
 
   const defaultOption = createDefaultOptions(options);
-  const formSelect = createDropdown(defaultOption);
+  const formSelect = createDefaultDropdown(defaultOption, atributes);
+  const lable = createLable(...lableAtributes);
 
   const customFormArrow = createElement("span", {
     className: "custom-form-arrow",
   });
 
+  customFormSelect.appendChild(lable);
   customFormSelect.appendChild(formSelect);
   customFormSelect.appendChild(customFormArrow);
 

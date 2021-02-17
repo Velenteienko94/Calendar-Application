@@ -6,8 +6,6 @@ import { createTableCell } from "./components/table-cell";
 import { createTableHeader } from "./components/table-header";
 import { createToolbar } from "./components/toolbar";
 import { createElement } from "./utils/createElement";
-// import { cerateForm } from "./components/form";
-// import { createEvent } from "./utils/createEvent";
 import calendar from "./utils/calendar";
 
 const calendarContainer = document.getElementById("calendarContainer");
@@ -39,5 +37,3 @@ timeSlots.forEach((value, timeIndex) => {
   });
   calendarTable.appendChild(createTableRow(cells));
 });
-
-// const createEventBtn = document.getElementById("createEventBtn");

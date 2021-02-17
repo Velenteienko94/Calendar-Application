@@ -4,10 +4,10 @@ import { createElement } from "../../utils/createElement";
 /**
  *
  */
-export function createBtn(btnText) {
+export function createBtn(atributes = {}) {
   const btn = createElement("button", {
     className: "Btn",
-    innerText: btnText,
+    ...atributes,
   });
   return btn;
 }
