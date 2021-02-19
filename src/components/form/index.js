@@ -9,11 +9,6 @@ import {
   participants,
   meetings,
 } from "../../constants";
-import {
-  getSelectedOptionsIndex,
-  getSelectedOptionsValue,
-  createMeeting,
-} from "../../utils/getSelectedIndex";
 
 /**
  *
@@ -27,60 +22,56 @@ export function createForm() {
     className: "eventForm",
     onsubmit: (event) => {
       event.preventDefault();
-      console.log(event);
-      // const form = document.querySelector(".eventForm");
-      const selectedNameOfEvent = document.getElementById("nameOfEvent");
-      const participantsSelect = document.getElementById("participants-select");
-      const daySelect = document.getElementById("day-select");
-      const timeSelect = document.getElementById("time-select");
+      const form = document.querySelector(".eventForm");
+      const formData = new FormData(form);
 
-      const nameOfEvent = selectedNameOfEvent.value;
-      const participants = getSelectedOptionsValue(participantsSelect);
-      const day = getSelectedOptionsIndex(daySelect);
-      const time = getSelectedOptionsIndex(timeSelect);
-      createMeeting(nameOfEvent, participants, ...day, ...time);
-      console.log(meetings);
+      /**
+       *
+       */
+      function createEvent(formData) {
+        const meeting = {};
+        for (const [key, value] of formData.entries()) {
+          if (meeting[key] !== undefined) {
+            const values =
+              typeof meeting[key] === "number"
+                ? [meeting[key], parseInt(value)]
+                : [...meeting[key], parseInt(value)];
+            meeting[key] = values;
+            continue;
+          }
+          if (value.length > 2 || key === "Event name") {
+            meeting[key] = value;
+          }
+          if (meeting[key] === undefined) meeting[key] = parseInt(value);
+        }
 
-      localStorage.setItem("meetings", JSON.stringify(meetings));
+        return meeting;
+      }
 
-      // const selectedDay = [];
-      // for (const option of daySelect.options) {
-      //   if (option.selected) {
-      //     selectedDay.push(option.index);
-      //   }
-      // }
-      // console.log(selectedDay);
-      // const formData = new FormData(form);
-      // const event1 = {};
-      // const events = [];
-      // // for (const [key, value] of formData) {
-      // //   event1[key] = value;
-      // // }
-      // // console.log(event1);
+      meetings.push(createEvent(formData));
+      const meeting = createEvent(formData);
+      const stringifyEvent = JSON.stringify(meetings);
+      const storageEvent = JSON.parse(localStorage.getItem("meetings"));
 
-      // for (const [key, value] of formData.entries()) {
-      //   if (key === "nameOfEvent") {
-      //     event1["name"] = value;
-      //   }
-      //   if (key === "day-select") {
-      //     event1["day"] = value;
-      //   }
-      //   if (key === "time-select") {
-      //     event1["time"] = value;
-      //   }
-      //   if (key === "participants-select") {
-      //     event1["participants"] = [].push(value);
-      //   }
-      // }
-      // events.push(event);
-      // console.log(event1);
+      if (storageEvent) {
+        if (
+          storageEvent.some(
+            ({ day, time }) => day === meeting.day && time === meeting.time
+          )
+        ) {
+          throw new Error(
+            "You can't add more than one meeting in the same  day and time "
+          );
+        }
+      }
+      localStorage.setItem("meetings", stringifyEvent);
     },
   });
 
   const lableForEvent = createLable("nameOfEvent", "Name of event: ");
   const input = createElement("input", {
     type: "text",
-    name: "nameOfEvent",
+    name: "event name",
     placeholder: "Name of event",
     id: "nameOfEvent",
   });
@@ -90,20 +81,20 @@ export function createForm() {
     {
       id: "participants-select",
       multiple: "multiple",
-      name: "participants-select",
+      name: "participants",
     },
     ["participants-select", "Select participants:"]
   );
 
   const daySelect = createCustomFormSelect(
     daysOfWeek,
-    { id: "day-select", name: "day-select" },
+    { id: "day-select", name: "day" },
     ["day-select", "Select day:"]
   );
 
   const timeSelect = createCustomFormSelect(
     slotsOfTime,
-    { id: "time-select", name: "time-select" },
+    { id: "time-select", name: "time" },
     ["time-select", "Select time:"]
   );
 
