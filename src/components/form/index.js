@@ -9,6 +9,7 @@ import {
   participants,
   meetings,
 } from "../../constants";
+export const storageEvent = JSON.parse(localStorage.getItem("meetings"));
 
 /**
  *
@@ -39,7 +40,7 @@ export function createForm() {
             meeting[key] = values;
             continue;
           }
-          if (value.length > 2 || key === "Event name") {
+          if (value.length > 2 || key === "ventName") {
             meeting[key] = value;
           }
           if (meeting[key] === undefined) meeting[key] = parseInt(value);
@@ -50,28 +51,41 @@ export function createForm() {
 
       meetings.push(createEvent(formData));
       const meeting = createEvent(formData);
-      const stringifyEvent = JSON.stringify(meetings);
+      const AllStringifyEvents = JSON.stringify(meetings);
+      const stringifyEvent = JSON.stringify(meeting);
       const storageEvent = JSON.parse(localStorage.getItem("meetings"));
 
-      if (storageEvent) {
-        if (
-          storageEvent.some(
-            ({ day, time }) => day === meeting.day && time === meeting.time
-          )
-        ) {
-          throw new Error(
-            "You can't add more than one meeting in the same  day and time "
-          );
-        }
+      if (storageEvent === null) {
+        localStorage.setItem("meetings", AllStringifyEvents);
       }
-      localStorage.setItem("meetings", stringifyEvent);
+      if (
+        storageEvent !== null &&
+        storageEvent.some(
+          ({ day, time }) => day === meeting.day && time === meeting.time
+        )
+      ) {
+        throw (
+          new Error(
+            "You can't add more than one meeting in the same  day and time "
+          ) && meetings.pop(meeting)
+        );
+      }
+      if (
+        storageEvent !== null &&
+        !storageEvent.some(
+          ({ day, time }) => day === meeting.day && time === meeting.time
+        )
+      ) {
+        meetings.push(meeting);
+        localStorage.setItem("meetings", AllStringifyEvents);
+      }
     },
   });
 
   const lableForEvent = createLable("nameOfEvent", "Name of event: ");
   const input = createElement("input", {
     type: "text",
-    name: "event name",
+    name: "eventName",
     placeholder: "Name of event",
     id: "nameOfEvent",
   });
