@@ -8,8 +8,8 @@ import { createToolbar } from "./components/toolbar";
 import { createElement } from "./utils/createElement";
 import { createEvent } from "./utils/createEvent";
 import calendar from "./utils/calendar";
-// import storageEvent from "./components/form";
 
+const keyForStorageMeetings = "meetings";
 const calendarContainer = document.getElementById("calendarContainer");
 const calendarTable = createElement("table", { id: "calendar" });
 calendarContainer.appendChild(createToolbar());
@@ -28,21 +28,20 @@ const headers = [
 
 const headersRow = createTableRow(headers);
 calendarTable.appendChild(headersRow);
-// console.log(timeSlots);
 timeSlots.forEach((value, timeIndex) => {
   const timeSlot = createTableCell({
     innerText: value,
     className: "timeSlot-cell",
   });
   const cells = [timeSlot];
-  // console.log(weekDays);
   weekDays.forEach((el, dayIndex) => {
     cells.push(calendar[dayIndex][timeIndex].cell);
   });
   calendarTable.appendChild(createTableRow(cells));
 });
 
-const meetings = JSON.parse(localStorage.getItem("meetings"));
+// if selects value All members do this
+const meetings = JSON.parse(localStorage.getItem(keyForStorageMeetings));
 
 for (const meeting of meetings) {
   createEvent(
@@ -53,3 +52,9 @@ for (const meeting of meetings) {
     meeting.participants
   );
 }
+console.log(calendar);
+// select value = members name do this
+
+// const dropdown = document.getElementById("participant-select");
+// const dropDownValues = dropdown.options[dropdown.selectedIndex].text;
+// console.log(dropDownValues);

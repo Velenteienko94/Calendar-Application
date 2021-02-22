@@ -3,14 +3,60 @@ import { createElement } from "../../utils/createElement";
 import { createCustomFormSelect } from "../custom-form-select/index";
 import { createBtn } from "../create-btn/index";
 import { createLable } from "../create-lable/index";
-import {
-  daysOfWeek,
-  slotsOfTime,
-  participants,
-  meetings,
-} from "../../constants";
-export const storageEvent = JSON.parse(localStorage.getItem("meetings"));
+import { daysOfWeek, slotsOfTime, participants } from "../../constants";
 
+/**
+ *create and object with 2 func
+ *getMeetings get meetings from storage or create an empty array
+ *createMeetings {meeting = {}} check is  storage alredy has the same meeting and set new meeting to the storage
+ */
+const calendarServiceFactory = () => {
+  const storage = localStorage;
+
+  const storageMeetingsKey = "meetings";
+
+  const getMeetings = () =>
+    JSON.parse(storage.getItem(storageMeetingsKey)) || [];
+
+  const createMeeting = (meeting) => {
+    const meetings = getMeetings();
+    if (
+      meetings.some(
+        ({ day, time }) => day === meeting.day && time === meeting.time
+      )
+    )
+      throw new Error(
+        "You can't add more than one meeting in the same  day and time "
+      );
+
+    meetings.push(meeting);
+    storage.setItem(storageMeetingsKey, JSON.stringify(meetings));
+  };
+
+  return { getMeetings, createMeeting };
+};
+
+const calendarService = calendarServiceFactory();
+
+const mapFormData = (formData) => {
+  const meeting = {};
+  for (const [key, value] of formData.entries()) {
+    if (meeting[key] !== undefined) {
+      const values =
+        typeof meeting[key] === "number"
+          ? [meeting[key], parseInt(value)]
+          : [...meeting[key], parseInt(value)];
+      meeting[key] = values;
+      continue;
+    }
+    if (value.length > 2 || key === "eventName") {
+      meeting[key] = value;
+    }
+    if (meeting[key] === undefined) meeting[key] = parseInt(value);
+  }
+
+  return meeting;
+};
 /**
  *
  */
@@ -19,67 +65,26 @@ export function createForm() {
     className: "selectContainer",
   });
 
+  const eventFormClassName = "eventForm";
+
+  const onFormSubmit = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    const meeting = mapFormData(formData);
+
+    try {
+      calendarService.createMeeting(meeting);
+      alert("meeting was successfully created");
+      form.reset();
+    } catch (error) {
+      alert("You cannot create more than one meeting in the same day and time");
+    }
+  };
+
   const form = createElement("form", {
-    className: "eventForm",
-    onsubmit: (event) => {
-      event.preventDefault();
-      const form = document.querySelector(".eventForm");
-      const formData = new FormData(form);
-
-      /**
-       *
-       */
-      function createEvent(formData) {
-        const meeting = {};
-        for (const [key, value] of formData.entries()) {
-          if (meeting[key] !== undefined) {
-            const values =
-              typeof meeting[key] === "number"
-                ? [meeting[key], parseInt(value)]
-                : [...meeting[key], parseInt(value)];
-            meeting[key] = values;
-            continue;
-          }
-          if (value.length > 2 || key === "ventName") {
-            meeting[key] = value;
-          }
-          if (meeting[key] === undefined) meeting[key] = parseInt(value);
-        }
-
-        return meeting;
-      }
-
-      meetings.push(createEvent(formData));
-      const meeting = createEvent(formData);
-      const AllStringifyEvents = JSON.stringify(meetings);
-      const stringifyEvent = JSON.stringify(meeting);
-      const storageEvent = JSON.parse(localStorage.getItem("meetings"));
-
-      if (storageEvent === null) {
-        localStorage.setItem("meetings", AllStringifyEvents);
-      }
-      if (
-        storageEvent !== null &&
-        storageEvent.some(
-          ({ day, time }) => day === meeting.day && time === meeting.time
-        )
-      ) {
-        throw (
-          new Error(
-            "You can't add more than one meeting in the same  day and time "
-          ) && meetings.pop(meeting)
-        );
-      }
-      if (
-        storageEvent !== null &&
-        !storageEvent.some(
-          ({ day, time }) => day === meeting.day && time === meeting.time
-        )
-      ) {
-        meetings.push(meeting);
-        localStorage.setItem("meetings", AllStringifyEvents);
-      }
-    },
+    className: eventFormClassName,
+    onsubmit: onFormSubmit,
   });
 
   const lableForEvent = createLable("nameOfEvent", "Name of event: ");

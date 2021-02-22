@@ -6,9 +6,9 @@ import { createElement } from "../../utils/createElement";
 export function createDefaultDropdown(options = [], atributes = {}) {
   const select = createElement("select", {
     ...atributes,
-    onchange: (e) => {
-      console.log(e);
-    },
+    // onchange: (e) => {
+    //   console.log(e);
+    // },
   });
   options.forEach((option) => {
     select.appendChild(option);

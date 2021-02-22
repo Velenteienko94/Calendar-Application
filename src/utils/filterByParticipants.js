@@ -1,24 +1,31 @@
-import { createDropdown } from "../components/dropdown";
 import calendar from "./calendar";
+
 /**
  *
  * @param {*}
  */
-export function filterByParticipants(participantName) {
-  calendar.forEach((day) => {
-    const meetingSlots = day.filter((name, index) => {
-      // name === participantName;
-      const meeting = {
-        meetingDay: day,
-        meetingTime: index,
-        participant: participantName,
-      };
-      const meetings = [];
-      meetings.push(meeting);
-    });
-  });
-  calendar.reduce(() => {});
-  return;
-}
+// export function filterByParticipants(participantValue) {
 
-// name = select.onchange
+//   const filterDay = calendar.forEach((day) => {
+//     const filteredParticipants = day.filter(({ ...meeting }) => {
+//       participantValue === meeting;
+//     });
+//   });
+// }
+
+// participantValue = select.onchange
+
+/**
+ *
+ * @param {*}
+ */
+// export function filterPartic(participantValue) {
+//   const storage = JSON.parse(localStorage.getItem("meetings"));
+//   if ((participantValue = "All members")) {
+//     return storage;
+//   }
+
+//check if any meeting from storage iclude  participantValue
+//catch events that iclude  participantValue and map them to array
+//render only that array
+// make
